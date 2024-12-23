@@ -1,0 +1,35 @@
+import time
+import matplotlib.pyplot as plt
+
+# Algoritma Rekursif
+def find_best_seat_recursive(seats):
+    if len(seats) == 1:
+        return seats[0]
+    mid = len(seats) // 2
+    left_best = find_best_seat_recursive(seats[:mid])
+    right_best = find_best_seat_recursive(seats[mid:])
+    return left_best if evaluate_seat(left_best) > evaluate_seat(right_best) else right_best
+
+# Fungsi Evaluasi Dummy
+def evaluate_seat(seat):
+    return seat  # Contoh: nilai seat sama dengan posisi (misalnya jarak ke layar)
+
+# Eksperimen
+sizes = [10, 100, 1000, 5000, 10000]
+recursive_times = []
+
+for size in sizes:
+    seats = list(range(size))  # Contoh kursi dengan nilai dummy
+    # Rekursif
+    start = time.time()
+    find_best_seat_recursive(seats)
+    recursive_times.append(time.time() - start)
+
+# Visualisasi
+plt.plot(sizes, recursive_times, label="Recursive (O(n^2))", marker='o')
+plt.xlabel("Number of Seats (n)")
+plt.ylabel("Running Time (s)")
+plt.title("Running Time of Recursive Algorithm")
+plt.legend()
+plt.grid()
+plt.show()
